@@ -41,10 +41,7 @@ static int irq_consumer_remove(struct platform_device *platform_dev)
 {
 
 	struct irq_consumer_dev *devp = platform_get_drvdata(platform_dev);
-	printk("%s:%d irq_index=%d\n", __FUNCTION__, __LINE__, devp->irq_index);
 
-	free_irq(devp->irq_index, devp);
-	printk("%s:%d\n", __FUNCTION__, __LINE__);
 	platform_set_drvdata(platform_dev, NULL);
 
 	return 0;
