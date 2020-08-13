@@ -1,5 +1,5 @@
-#ifndef VIRTUAL_SPI_CONTROLLER_H_
-#define VIRTUAL_SPI_CONTROLLER_H_
+#ifndef IRQ_CONSUMER_DRIVER_H_ 
+#define IRQ_CONSUMER_DRIVER_H_ 
 
 #include <linux/fs.h>
 #include <linux/init.h>

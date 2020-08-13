@@ -1,5 +1,5 @@
-#ifndef VIRTUAL_SPI_CONTROLLER_H_
-#define VIRTUAL_SPI_CONTROLLER_H_
+#ifndef VIRT0808IRQ_H_
+#define VIRT0808IRQ_H__
 
 #include <linux/fs.h>
 #include <linux/init.h>
