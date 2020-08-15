@@ -31,7 +31,8 @@ static void irq_consumer_dev_release(struct device *dev)
 
 static struct irq_consumer_info consumer_info =
 {
-	.irq_index = 81,
+	.irq_index_for_virt0813 = 96,
+	.irq_index_for_virt0808 = 86,
 };
 static struct platform_device irq_consumer_devplatform_device = {
 	.name = "virt_irq_consumer",

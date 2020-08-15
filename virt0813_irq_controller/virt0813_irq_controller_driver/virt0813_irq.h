@@ -1,5 +1,5 @@
-#ifndef IRQ_CONSUMER_DRIVER_H_ 
-#define IRQ_CONSUMER_DRIVER_H_ 
+#ifndef VIRT0813_IRQ_H_
+#define VIRT0813_IRQ_H_
 
 #include <linux/fs.h>
 #include <linux/init.h>
@@ -37,19 +37,29 @@
 #include <linux/dcache.h>
 #include <linux/irq.h>
 #include <linux/irq_work.h>
+#include <linux/irqdomain.h>
 
-struct irq_consumer_info
+
+struct virt0813_irq_data 
 {
-	int irq_index_for_virt0808;
-	int irq_index_for_virt0813;
+	int irq_base;
+	int irq_num;
+	int parent_irq;
 };
 
-
-struct irq_consumer_dev
+struct virt0813_irq_provider
 {
-	int irq_index_for_virt0808;
-	int irq_index_for_virt0813;
-	/*priavte data for consumer device driver....*/
+	int irq_base;//映射后的irq起始地址
+	int irq_num;
+
+	uint32_t irq_status;
+	uint32_t irq_mask_reg;
+	uint32_t irq_level_reg;
+	uint32_t irq_edge_reg;
+	struct irq_chip irq_chip;
+	struct irq_domain	*irq_domain;
+	struct platform_device *platform_dev;
+	spinlock_t lock;
 };
 
 #endif

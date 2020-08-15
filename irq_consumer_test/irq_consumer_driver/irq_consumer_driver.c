@@ -1,7 +1,14 @@
 #include "irq_consumer_driver.h"
 /*virt_irq_provider_t*/
 
-static irqreturn_t irq_consumer_handler(int irq, void *data)
+static irqreturn_t irq_consumer_of_led_handler(int irq, void *data)
+{
+	printk("%s:%d irq=%d\n", __FUNCTION__, __LINE__, irq);	
+
+	return IRQ_HANDLED;
+}
+
+static irqreturn_t irq_consumer_of_key_handler(int irq, void *data)
 {
 	printk("%s:%d irq=%d\n", __FUNCTION__, __LINE__, irq);	
 
@@ -22,15 +29,24 @@ static int irq_consumer_probe(struct platform_device *platform_dev)
 	if(devp == NULL)
 		return -ENOMEM;
 	
-	devp->irq_index = infop->irq_index;
-	ret = devm_request_irq(&platform_dev->dev, devp->irq_index, irq_consumer_handler, 0,
+	devp->irq_index_for_virt0808 = infop->irq_index_for_virt0808;
+	devp->irq_index_for_virt0813 = infop->irq_index_for_virt0813;
+	ret = devm_request_irq(&platform_dev->dev, devp->irq_index_for_virt0808, irq_consumer_of_key_handler, 0,
 							platform_dev->name, devp);
 	if (ret < 0) 
 	{
-		printk("request_irq() failed: %d", ret);
+		printk("request_irq() for %d failed: %d", devp->irq_index_for_virt0808, ret);
 		return ret;
 	}
-	irq_set_irq_type(devp->irq_index, IRQ_TYPE_EDGE_RISING);
+	irq_set_irq_type(devp->irq_index_for_virt0808, IRQ_TYPE_EDGE_RISING);
+	ret = devm_request_irq(&platform_dev->dev, devp->irq_index_for_virt0813, irq_consumer_of_led_handler, 0,
+							platform_dev->name, devp);
+	if (ret < 0) 
+	{
+		printk("request_irq() for %d failed: %d", devp->irq_index_for_virt0813, ret);
+		return ret;
+	}
+	irq_set_irq_type(devp->irq_index_for_virt0813, IRQ_TYPE_EDGE_RISING);
 
 	platform_set_drvdata(platform_dev, devp);
 	printk("%s:%d\n", __FUNCTION__, __LINE__);
@@ -39,9 +55,7 @@ static int irq_consumer_probe(struct platform_device *platform_dev)
 
 static int irq_consumer_remove(struct platform_device *platform_dev)
 {
-
-	struct irq_consumer_dev *devp = platform_get_drvdata(platform_dev);
-
+	printk("%s:%d\n", __FUNCTION__, __LINE__);
 	platform_set_drvdata(platform_dev, NULL);
 
 	return 0;

@@ -1,5 +1,5 @@
-#ifndef VIRT0808IRQ_H_
-#define VIRT0808IRQ_H__
+#ifndef VIRT0808_IRQ_H_
+#define VIRT0808_IRQ_H_
 
 #include <linux/fs.h>
 #include <linux/init.h>
@@ -37,6 +37,7 @@
 #include <linux/dcache.h>
 #include <linux/irq.h>
 #include <linux/irq_work.h>
+#include <linux/irqdomain.h>
 
 
 struct virt_irq_controller_data
@@ -55,8 +56,9 @@ struct virt_irq_provider
 	uint32_t irq_mask_reg;
 	uint32_t irq_level_reg;
 	uint32_t irq_edge_reg;
-	int test_irq_num;
 	struct irq_chip irq_chip;
+	struct irq_domain	*irq_domain;
+	struct platform_device *platform_dev;
 	spinlock_t lock;
 };
 
